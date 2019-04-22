@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Post;
+use App\Sort;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -131,7 +132,7 @@ class PostController extends Controller
     protected function form()
     {
         $form = new Form(new Post);
-        $option = [1=>'种植产品', 2=>'种植基地'];
+        $option = $this->showSorts();//[1=>'种植产品', 2=>'种植基地'];
 
 //        $form->text('user_id', '作者');
         $form->image('post_img', '文章导图');
@@ -143,5 +144,15 @@ class PostController extends Controller
         $form->text('description', '描述');
 
         return $form;
+    }
+
+    protected function showSorts(){
+        $sort = Sort::all();
+        $arr = [];
+        foreach ($sort as $item) {
+            $arr[$item->id] = $item->name;
+        }
+        //dd($arr);
+        return $arr;
     }
 }
