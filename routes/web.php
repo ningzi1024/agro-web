@@ -21,3 +21,4 @@ Route::get('/', function () {
 Route::get('/aboutUs', function () {
     return view('aboutUs');
 });
+Route::post('/upimage', 'UploadApiController@upimage');

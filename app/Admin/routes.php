@@ -12,5 +12,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
     $router->resource('/auth/sorts', SortController::class);
+    $router->resource('/auth/posts', PostController::class);
+
 
 });
