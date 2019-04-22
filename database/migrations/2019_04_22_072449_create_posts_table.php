@@ -15,7 +15,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id')->autoIncrement();
-            $table->tinyInteger('user_id');
+            $table->tinyInteger('user_id')->default(1)->nullable();
             $table->string('post_img');
             $table->string('title');
             $table->tinyInteger('sort_id');

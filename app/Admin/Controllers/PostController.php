@@ -87,7 +87,9 @@ class PostController extends Controller
         $grid->title('标题');
         $grid->sort_id('分类');
         $grid->abstract('简介');
-        $grid->content('文章内容');
+        $grid->content('文章内容')->display(function($content){
+            return str_limit($content,100,'...');
+        });
         $grid->keywords('关键字');
         $grid->description('描述');
         $grid->created_at('创建时间');
@@ -129,13 +131,14 @@ class PostController extends Controller
     protected function form()
     {
         $form = new Form(new Post);
+        $option = [1=>'种植产品', 2=>'种植基地'];
 
-        $form->switch('user_id', '作者');
-        $form->text('post_img', '文章导图');
+//        $form->text('user_id', '作者');
+        $form->image('post_img', '文章导图');
         $form->text('title', '标题');
-        $form->switch('sort_id', '分类');
+        $form->select('sort_id', '分类')->options($option);
         $form->text('abstract', '简介');
-        $form->textarea('content', '文章内容');
+        $form->editor('content', '文章内容');
         $form->text('keywords', '关键字');
         $form->text('description', '描述');
 
