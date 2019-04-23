@@ -82,11 +82,18 @@ class SortController extends Controller
         $grid = new Grid(new Sort);
 
         $grid->id('Id');
-        $grid->name('Name');
-        $grid->parent_id('Parent id');
-        $grid->desc('Desc');
-        $grid->created_at('Created at');
-        $grid->updated_at('Updated at');
+        $grid->name('名称');
+        $grid->parent_id('父级')->display(function($parent_id){
+            if(empty($parent_id)){
+                return '无';
+            }else{
+                return Sort::find($parent_id)->name;
+            }
+        });
+        $grid->desc('描述');
+        $grid->level('级别');
+        $grid->created_at('创建时间');
+        $grid->updated_at('更新时间');
 
         return $grid;
     }
@@ -102,11 +109,18 @@ class SortController extends Controller
         $show = new Show(Sort::findOrFail($id));
 
         $show->id('Id');
-        $show->name('Name');
-        $show->parent_id('Parent id');
-        $show->desc('Desc');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+        $show->name('名称');
+        $show->parent_id('父级')->display(function($parent_id){
+            if(empty($parent_id)){
+                return '无';
+            }else{
+                return Sort::find($parent_id)->name;
+            }
+        });
+        $show->desc('描述');
+        $show->level('级别');
+        $show->created_at('创建时间');
+        $show->updated_at('更新时间');
 
         return $show;
     }
@@ -119,11 +133,24 @@ class SortController extends Controller
     protected function form()
     {
         $form = new Form(new Sort);
+        $option = $this->showSorts();
 
-        $form->text('name', 'Name');
-        $form->switch('parent_id', 'Parent id');
-        $form->text('desc', 'Desc');
+        $form->text('name', '名称');
+        $form->select('parent_id', '父级')->options($option);
+        $form->text('desc', '描述');
+        $form->text('level', '级别');
 
         return $form;
+    }
+
+    protected function showSorts(){
+        $sort = Sort::all();
+        $arr = [0=>'最高级'];
+        foreach ($sort as $item) {
+            if($item->level==1){
+                $arr[$item->id] = $item->name;
+            }
+        }
+        return $arr;
     }
 }

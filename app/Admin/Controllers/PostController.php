@@ -81,12 +81,13 @@ class PostController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Post);
-
         $grid->id('文章ID');
         $grid->user_id('作者');
         $grid->post_img('文章导图');
         $grid->title('标题');
-        $grid->sort_id('分类');
+        $grid->sort_id('分类')->display(function($sort_id){
+            return Sort::find($sort_id)->name;
+        });
         $grid->abstract('简介');
         $grid->content('文章内容')->display(function($content){
             return str_limit($content,100,'...');
@@ -95,7 +96,6 @@ class PostController extends Controller
         $grid->description('描述');
         $grid->created_at('创建时间');
         $grid->updated_at('更新时间');
-
         return $grid;
     }
 
@@ -132,7 +132,7 @@ class PostController extends Controller
     protected function form()
     {
         $form = new Form(new Post);
-        $option = $this->showSorts();//[1=>'种植产品', 2=>'种植基地'];
+        $option = $this->showSorts();
 
 //        $form->text('user_id', '作者');
         $form->image('post_img', '文章导图');
